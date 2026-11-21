@@ -9,29 +9,38 @@
  * }
  */
 class Solution {
-    ListNode rev(ListNode head){
-        ListNode head1 = head;
-        if(head1 == null || head1.next == null) return head1;
-        ListNode newHead = rev(head1.next);
-        head1.next.next = head1;
-        head1.next = null;
-        return newHead;
+    public ListNode reverse(ListNode h){
+        ListNode f = null;
+        ListNode p = null;
+        ListNode c = h;
+
+        while(c != null){
+            f= c.next;
+            c.next = p;
+            p = c;
+            c = f;
+        }
+        return p;
     }
     public int pairSum(ListNode head) {
-        ListNode slow = head, fast = head;
-        while(fast != null){
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast != null && fast.next != null){
             slow = slow.next;
             fast = fast.next.next;
         }
-        ListNode revs = rev(slow);
-        fast = head;
-        int sum = 0, max = 0;
-        while(revs != null){
-            sum = fast.val + revs.val;
-            max = Math.max(max, sum);
-            fast = fast.next;
-            revs = revs.next;
+        ListNode rev = reverse(slow);
+        ListNode temp = rev;
+        slow= head;
+        int sum = 0, maxSum = 0;
+
+        while(temp!=null){
+            sum = temp.val + slow.val;
+            maxSum = Math.max(maxSum, sum);
+            temp = temp.next;
+            slow = slow.next;
         }
-        return max;
+        return maxSum;
+
     }
 }
